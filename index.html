@@ -1,107 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  background-color: #fff;
-  padding: 20px;
-  margin-top: 50px;
-  max-width: 300px;
-  margin: auto;
-  text-align: center;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-input[type=text], input[type=password], input[type=submit] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  border-radius: 5px;
-}
-
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-.cancelbtn, .registerbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
-}
-
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
-
-@media screen and (max-width: 300px) {
-  span.psw {
-     display: block;
-     float: none;
-  }
-  .cancelbtn, .registerbtn {
-     width: 100%;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bouncing Balls!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    #canvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+  </style>
 </head>
 <body>
+  <canvas id="canvas"></canvas>
+  <script>
+    // Get the canvas element
+    const canvas = document.getElementById('canvas');
 
-<h2>Login Form</h2>
-<form action="/login" method="post">
-  <div class="container">
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
-    <button type="submit">Login</button>
-    <input type="checkbox" checked="checked" name="remember"> Remember me
-  </div>
-</form>
+    // Set the canvas width and height to match the window
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-<h2>Register Form</h2>
-<form action="/register" method="post">
-  <div class="container">
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
-    <button type="submit">Register</button>
-  </div>
-</form>
+    // Get the 2D context of the canvas
+    const ctx = canvas.getContext('2d');
 
-<h2>Contact Form</h2>
-<form action="/contact" method="post">
-  <div class="container">
-    <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
-    <label for="message"><b>Message</b></label>
-    <textarea placeholder="Type your message here" name="message" required></textarea>
-    <button type="submit">Send</button>
-  </div>
-</form>
+    // Create an array to store balls
+    const balls = [];
 
+    // Ball class
+    class Ball {
+      constructor(x, y, radius, color) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+        this.dx = Math.random() * 4 - 2; // Random horizontal velocity
+        this.dy = Math.random() * 4 - 2; // Random vertical velocity
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+
+      update() {
+        this.x += this.dx;
+        this.y += this.dy;
+
+        // Check wall collisions
+        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+          this.dx *= -1;
+        }
+        if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+          this.dy *= -1;
+        }
+
+        // Simulate gravity
+        this.dy += 0.1; // Increase downward velocity slightly
+
+        // Check touch interaction
+        if (this.isTouched(event)) {
+          this.dx *= -1; // Reverse horizontal velocity on touch
+          this.dy *= -0.5; // Reduce vertical velocity on touch
+        }
+      }
+
+      isTouched(event) {
+        if (!event) return false;
+        const touch = event.touches[0];
+        const distance = Math.sqrt(Math.pow(this.x - touch.clientX, 2) + Math.pow(this.y - touch.clientY, 2));
+        return distance < this.radius;
+      }
+    }
+
+  
+    for (let i = 0; i < 10; i++) {
+      balls.push(new Ball(Math.random() * canvas.width, Math.random() * canvas.height, 10, `hsl(${Math.random() * 360}, 100%, 50%)`));
+    }
+
+    
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    
+      for (const ball of balls) {
+        ball.update();
+        ball.draw();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    
+    canvas.addEventListener('touchstart', animate, false);
+
+    
+    animate();
+  </script>
 </body>
 </html>
