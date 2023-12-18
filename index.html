@@ -3,106 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bouncing Balls!</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-    }
-    #canvas {
-      width: 100vw;
-      height: 100vh;
-      display: block;
-    }
-  </style>
+  <title>User Flow Graph</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="canvas"></canvas>
-  <script>
-    
-    const canvas = document.getElementById('canvas');
-
-    
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    
-    const ctx = canvas.getContext('2d');
-
-    
-    const balls = [];
-
-    
-    class Ball {
-      constructor(x, y, radius, color) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.color = color;
-        this.dx = Math.random() * 4 - 2;
-        this.dy = Math.random() * 4 - 2; 
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-      }
-
-      update() {
-        this.x += this.dx;
-        this.y += this.dy;
-
-        // Check wall collisions
-        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
-          this.dx *= -1;
-        }
-        if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
-          this.dy *= -1;
-        }
-
-        // Simulate gravity
-        this.dy += 0.1; // Increase downward velocity slightly
-
-        // Check touch interaction
-        if (this.isTouched(event)) {
-          this.dx *= -1; // Reverse horizontal velocity on touch
-          this.dy *= -0.5; // Reduce vertical velocity on touch
-        }
-      }
-
-      isTouched(event) {
-        if (!event) return false;
-        const touch = event.touches[0];
-        const distance = Math.sqrt(Math.pow(this.x - touch.clientX, 2) + Math.pow(this.y - touch.clientY, 2));
-        return distance < this.radius;
-      }
-    }
-
-  
-    for (let i = 0; i < 10; i++) {
-      balls.push(new Ball(Math.random() * canvas.width, Math.random() * canvas.height, 10, `hsl(${Math.random() * 360}, 100%, 50%)`));
-    }
-
-    
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    
-      for (const ball of balls) {
-        ball.update();
-        ball.draw();
-      }
-
-      requestAnimationFrame(animate);
-    }
-
-    
-    canvas.addEventListener('touchstart', animate, false);
-
-    
-    animate();
-  </script>
+  <h1>User Flow</h1>
+  <div class="graph-container">
+    <div class="node" data-label="Homepage">
+      <a href="#">Homepage</a>
+    </div>
+    <div class="node" data-label="Product Catalog">
+      <a href="#">Product Catalog</a>
+    </div>
+    <div class="node" data-label="Product Page">
+      <a href="#">Product Page</a>
+    </div>
+    <div class="node" data-label="Cart">
+      <a href="#">Cart</a>
+    </div>
+    <div class="node" data-label="Checkout">
+      <a href="#">Checkout</a>
+    </div>
+    <div class="node" data-label="Confirmation">
+      <a href="#">Confirmation</a>
+    </div>
+    <div class="edge" data-from="Homepage" data-to="Product Catalog">Browse Products</div>
+    <div class="edge" data-from="Product Catalog" data-to="Product Page">View Product Details</div>
+    <div class="edge" data-from="Product Page" data-to="Cart">Add to Cart</div>
+    <div class="edge" data-from="Cart" data-to="Checkout">Proceed to Checkout</div>
+    <div class="edge" data-from="Checkout" data-to="Confirmation">Place Order</div>
+    <div class="edge" data-from="Product Page" data-to="Product Catalog">Go Back</div>
+  </div>
 </body>
 </html>
