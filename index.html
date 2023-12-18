@@ -20,29 +20,28 @@
 <body>
   <canvas id="canvas"></canvas>
   <script>
-    // Get the canvas element
+    
     const canvas = document.getElementById('canvas');
 
-    // Set the canvas width and height to match the window
+    
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Get the 2D context of the canvas
+    
     const ctx = canvas.getContext('2d');
 
-    // Create an array to store balls
+    
     const balls = [];
 
-    // Ball class
+    
     class Ball {
       constructor(x, y, radius, color) {
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.color = color;
-        this.dx = Math.random() * 4 - 2; // Random horizontal velocity
-        this.dy = Math.random() * 4 - 2; // Random vertical velocity
-      }
+        this.dx = Math.random() * 4 - 2;
+        this.dy = Math.random() * 4 - 2; 
 
       draw() {
         ctx.beginPath();
