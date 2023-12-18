@@ -1,6 +1,74 @@
 <!DOCTYPE html>
 <html>
+<head>
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  margin-top: 50px;
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type=text], input[type=password], input[type=submit] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.cancelbtn, .registerbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn, .registerbtn {
+     width: 100%;
+  }
+}
+</style>
+</head>
 <body>
+
 <h2>Login Form</h2>
 <form action="/login" method="post">
   <div class="container">
@@ -9,9 +77,7 @@
     <label for="psw"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="psw" required>
     <button type="submit">Login</button>
-    <label>
-      <input type="checkbox" checked="checked" name="remember"> Remember me
-    </label>
+    <input type="checkbox" checked="checked" name="remember"> Remember me
   </div>
 </form>
 
@@ -36,5 +102,6 @@
     <button type="submit">Send</button>
   </div>
 </form>
+
 </body>
 </html>
